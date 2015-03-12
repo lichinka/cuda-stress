@@ -1,0 +1,101 @@
+########################################
+#BIT =  x64 or WIN32                   # 
+#CUDA = 4.0, 4.1, 4.2, 5.0, 5.5 6.0 6.5#
+#VER =  As required                    #
+######################################## 
+# CUDA 3.2 no longer compiles due to   #
+# code changes not in 3.2              #
+########################################
+
+VER = 2.05.1
+BIT = WIN32
+CUDA_VERSION = 5.5
+NAME = CUDALucas$(VER)-CUDA$(CUDA_VERSION)-Windows-$(BIT).exe
+OUT = $(NAME)
+
+CUDA = C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v$(CUDA_VERSION)
+
+ifeq ($(CUDA_VERSION),$(filter $(CUDA_VERSION),5.5 6.0 6.5))
+	VCLOC = C:\Program Files (x86)\Microsoft Visual Studio 11.0
+else
+	VCLOC = C:\Program Files (x86)\Microsoft Visual Studio 10.0
+endif
+
+ifeq ($(BIT),x64)
+	CCLOC = "$(VCLOC)\VC\bin\amd64"
+else
+	CCLOC = "$(VCLOC)\VC\bin"
+endif
+	
+CC = $(CCLOC)\cl
+CFLAGS = /Ox /Oy /GL /W4 /fp:fast /nologo
+
+ifeq ($(CUDA_VERSION),$(filter $(CUDA_VERSION),4.0 4.1 4.2 5.0 5.5 6.0 6.5))
+	SMCODE += --generate-code arch=compute_13,code=sm_13
+	SMCODE += --generate-code arch=compute_20,code=sm_20
+endif
+ifeq ($(CUDA_VERSION),$(filter $(CUDA_VERSION),4.2 5.0 5.5 6.0 6.5))
+     SMCODE += --generate-code arch=compute_30,code=sm_30
+endif
+ifeq ($(CUDA_VERSION),$(filter $(CUDA_VERSION),5.5 6.0 6.5))
+     SMCODE += --generate-code arch=compute_35,code=sm_35
+endif
+ifeq ($(CUDA_VERSION),$(filter $(CUDA_VERSION),6.0 6.5))
+     SMCODE += --generate-code arch=compute_32,code=sm_32
+     SMCODE += --generate-code arch=compute_50,code=sm_50
+endif
+ifeq ($(CUDA_VERSION),$(filter $(CUDA_VERSION),6.5))
+     SMCODE += --generate-code arch=compute_52,code=sm_52
+endif
+
+ifeq ($(BIT),x64)
+	NVCCFLAGS = -m64
+else
+	NVCCFLAGS = -m32
+endif
+NVCCFLAGS += $(SMCODE) --ptxas-options=-v
+
+CUFLAGS = -ccbin=$(CCLOC) -D$(BIT) -Xcompiler /EHsc,/W3,/nologo,/Ox,/Oy,/GL $(NVCCFLAGS)
+
+LINK = $(CCLOC)\link
+LFLAGS = /nologo /LTCG #/ltcg:pgo
+
+SRC = parse.c
+CUSRC = CUDALucas.cu
+
+CUOBJS = $(CUSRC:.cu=.cuda$(CUDA_VERSION).$(BIT).obj)
+OBJS= $(SRC:.c=.$(BIT).obj)
+
+LIBS = "$(CUDA)/lib/$(BIT)/cudart.lib" "$(CUDA)/lib/$(BIT)/cufft.lib"
+
+#########################################################################################
+
+all : ..\$(NAME)
+
+..\$(NAME) : $(CUOBJS) $(OBJS)
+	$(LINK) $(LFLAGS) $^ $(LIBS) /out:..\$(OUT)
+
+%.cuda$(CUDA_VERSION).$(BIT).obj: %.cu
+	"$(CUDA)/bin/nvcc" -c $< -o $@ $(CUFLAGS)
+
+%.$(BIT).obj : %.c
+	$(CC) $(CFLAGS) /c $< /Fo$@
+
+#########################################################################################
+
+clean :
+	del $(OBJS)
+	del $(CUOBJS)
+	del *.o
+cleaner: clean
+	del ..\$(NAME)
+	
+debug: CFLAGS += /DEBUG	
+debug: CUFLAGS += -DEBUG
+debug: OUT = debug_$(NAME)
+debug: ..\$(NAME)
+
+test: CFLAGS += /DTEST
+test: CUFLAGS += -DTEST
+test: OUT = test_$(NAME)
+test: ..\$(NAME)

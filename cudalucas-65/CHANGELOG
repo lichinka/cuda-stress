@@ -1,0 +1,59 @@
+New in 2.05.1:.
+   - Fixed a rounding error
+
+New in 2.05:.
+   - MersenneForum user owftheevil implemented the bitshift for FFTs
+
+   - Restarting from previous checkpoint with a larger FFT in the case of errors
+     Occurs on the fly or via keyboard input
+
+   - Exponents from 7500 to 1100000000, depending on the card's memory
+
+   - Cufftbench, threadbench and memtest
+
+   - Screen output is configurable.
+
+New in 2.04:
+   - The default results file has been changed to "results.txt".
+
+   - The worktodo line parser is now apositional, recognizing certain characters
+     as only belonging to certain fields.
+
+   - Additionally, you can now specify FFT length for a given exponent with
+     (for example) "Test=N/A,expo,1444K". The FFT field must contain a K or M,
+     which are interpreted the obvious way.
+
+   - There is slightly more error checking on the command line options with an
+     argument (and for some reason, the "-s" option will no longer accept a
+     folder name starting with "-" :-) ).
+
+   - The -f option will also recognize and accept lengths such as "1444K" or
+     "3M", like the worktodo. However, you can specify a length the old way
+     without the K, unlike on the worktodo line.
+
+   - All FFT lengths printed are now in "1444K" format.
+
+   - Total time for a test is now measured and printed when the test is
+     complete. This time will be carried over between restarts in the save file,
+     however the program will recognize an old savefile without total time and
+     proceed accordingly. (Should it be printed to the results file?)
+
+   - The "err = " prints the maximum error since the last checkpoint, as opposed
+     to the maximum error since the last restart.
+     There was a slight change to how maximum error is handled.
+
+   - Now prints AID into results file, in a format that PrimeNet will
+     understand. (Thanks James!) (Unfortunately, it seems that PrimeNet doesn't
+     actually do anyhting with that AID.)
+
+   - The first 1000 iterations now use extra error checking (same as -t), and
+     also calculate average error. If average error >= 0.25, then the test will
+     be restarted with a longer FFT length.
+
+   - FFT selection should be somewhat better now, though not almost-perfect like
+     Prime95. I did get a table of lengths from Prime95's tables.
+
+   - Added mfakto's file locking code for results.txt. It should now be possible
+     to run more than one instance in one directory with the -i option.
+
+   - Changed "#ifdef linux" to "#ifndef _MSC_VER"

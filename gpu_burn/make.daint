@@ -1,0 +1,28 @@
+CC        = cc
+CXX       = CC
+NVCC      = nvcc
+FORT      = gfortran
+
+ARCH      = ar
+ARCHFLAGS = cr
+RANLIB    = ranlib
+
+LIB       = -lnvidia-ml -lcuda -lcudart -lcublas
+
+CUDADIR   = $(CUDATOOLKIT_HOME)
+LIBDIR    = -L. -L$(CUDADIR)/lib64
+INC       = -I$(CUDADIR)/include
+
+OPTS      = -O3 -g
+#
+# In NVOPTS, make an entry: --generate-code arch=compute_XY,code=sm_XY
+# for any compute capability you want to support. Possibilities are
+# For cuda 4.2, XY = 13, 20, or 30
+# For cuda 5.0, XY = 13, 20, 30, or 35
+# For cuda 5.5, XY = 13, 20, 30, or 35
+# For cuda 6.0, XY = 13, 20, 30, 35, or 50
+# For cuda 6.5, XY = 13, 20, 30, 35, or 50
+# For cuda 7.0, XY = 20, 30, 35, 50, or 52
+#
+NVOPTS    = $(OPTS) -arch sm_35 -DSM35
+LDOPTS    = 

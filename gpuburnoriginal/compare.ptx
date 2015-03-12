@@ -1,0 +1,205 @@
+	.version 1.4
+	.target sm_13
+	// compiled with /opt/nvidia/cudatoolkit6.5/6.5.14-1.0502.9613.6.1/open64/lib//be
+	// nvopencc 4.1 built on 2014-06-19
+
+	//-----------------------------------------------------------
+	// Compiling /tmp/tmpxft_00007591_00000000-9_compare.cpp3.i (/tmp/ccBI#.JbTALy)
+	//-----------------------------------------------------------
+
+	//-----------------------------------------------------------
+	// Options:
+	//-----------------------------------------------------------
+	//  Target:ptx, ISA:sm_13, Endian:little, Pointer Size:64
+	//  -O3	(Optimization level)
+	//  -g0	(Debug level)
+	//  -m2	(Report advisories)
+	//-----------------------------------------------------------
+
+	.file	1	"<command-line>"
+	.file	2	"/tmp/tmpxft_00007591_00000000-8_compare.cudafe2.gpu"
+	.file	3	"/usr/lib64/gcc/x86_64-suse-linux/4.3/include/stddef.h"
+	.file	4	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/crt/device_runtime.h"
+	.file	5	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/host_defines.h"
+	.file	6	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/builtin_types.h"
+	.file	7	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/device_types.h"
+	.file	8	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/driver_types.h"
+	.file	9	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/surface_types.h"
+	.file	10	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/texture_types.h"
+	.file	11	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/vector_types.h"
+	.file	12	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/device_launch_parameters.h"
+	.file	13	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/crt/storage_class.h"
+	.file	14	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_11_atomic_functions.h"
+	.file	15	"compare.cu"
+	.file	16	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/common_functions.h"
+	.file	17	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/math_functions.h"
+	.file	18	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/math_constants.h"
+	.file	19	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/device_functions.h"
+	.file	20	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_12_atomic_functions.h"
+	.file	21	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_13_double_functions.h"
+	.file	22	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_20_atomic_functions.h"
+	.file	23	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_32_atomic_functions.h"
+	.file	24	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_35_atomic_functions.h"
+	.file	25	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_20_intrinsics.h"
+	.file	26	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_30_intrinsics.h"
+	.file	27	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_32_intrinsics.h"
+	.file	28	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/sm_35_intrinsics.h"
+	.file	29	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/surface_functions.h"
+	.file	30	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/texture_fetch_functions.h"
+	.file	31	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/texture_indirect_functions.h"
+	.file	32	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/surface_indirect_functions.h"
+	.file	33	"/opt/nvidia/cudatoolkit6.5/default/bin/..//include/math_functions_dbl_ptx3.h"
+
+
+	.entry compare (
+		.param .u64 __cudaparm_compare_C,
+		.param .u64 __cudaparm_compare_faultyElems,
+		.param .u64 __cudaparm_compare_iters)
+	{
+	.reg .u32 %r<22>;
+	.reg .u64 %rd<17>;
+	.reg .f32 %f<7>;
+	.reg .pred %p<5>;
+	.loc	15	6	0
+$LDWbegin_compare:
+	ld.param.u64 	%rd1, [__cudaparm_compare_iters];
+	mov.u64 	%rd2, 1;
+	setp.le.u64 	%p1, %rd1, %rd2;
+	@%p1 bra 	$Lt_0_3074;
+	ld.param.u64 	%rd1, [__cudaparm_compare_iters];
+	sub.u64 	%rd3, %rd1, 1;
+	cvt.u32.u16 	%r1, %ntid.y;
+	cvt.u32.u16 	%r2, %ctaid.y;
+	mul.lo.u32 	%r3, %r2, %r1;
+	cvt.u32.u16 	%r4, %ntid.x;
+	mul.lo.u32 	%r5, %r4, %r1;
+	cvt.u32.u16 	%r6, %tid.y;
+	add.u32 	%r7, %r6, %r3;
+	cvt.u32.u16 	%r8, %nctaid.x;
+	mul.lo.u32 	%r9, %r5, %r8;
+	mul.lo.u32 	%r10, %r7, %r8;
+	cvt.u32.u16 	%r11, %ctaid.x;
+	add.u32 	%r12, %r11, %r10;
+	cvt.u32.u16 	%r13, %nctaid.y;
+	mul.lo.u32 	%r14, %r13, %r9;
+	cvt.u64.u32 	%rd4, %r14;
+	mul.lo.u32 	%r15, %r12, %r4;
+	cvt.u32.u16 	%r16, %tid.x;
+	add.u32 	%r17, %r16, %r15;
+	cvt.u64.u32 	%rd5, %r17;
+	ld.param.u64 	%rd6, [__cudaparm_compare_C];
+	mul.wide.u32 	%rd7, %r17, 4;
+	add.u64 	%rd8, %rd6, %rd7;
+	mul.wide.u32 	%rd9, %r14, 4;
+	ld.global.f32 	%f1, [%rd8+0];
+	add.u64 	%rd10, %rd5, %rd4;
+	mul.lo.u64 	%rd11, %rd10, 4;
+	add.u64 	%rd12, %rd6, %rd11;
+	mov.u64 	%rd13, 1;
+	mov.s32 	%r18, 0;
+	mov.s64 	%rd14, %rd3;
+$Lt_0_2562:
+ //<loop> Loop body line 6, nesting depth: 1, estimated iterations: unknown
+	.loc	15	14	0
+	add.s32 	%r19, %r18, 1;
+	ld.global.f32 	%f2, [%rd12+0];
+	sub.f32 	%f3, %f1, %f2;
+	abs.f32 	%f4, %f3;
+	mov.f32 	%f5, 0f3a83126f;     	// 0.001
+	setp.gt.f32 	%p2, %f4, %f5;
+	selp.s32 	%r18, %r19, %r18, %p2;
+	add.u64 	%rd13, %rd13, 1;
+	add.u64 	%rd12, %rd9, %rd12;
+	.loc	15	6	0
+	ld.param.u64 	%rd1, [__cudaparm_compare_iters];
+	.loc	15	14	0
+	setp.ne.u64 	%p3, %rd1, %rd13;
+	@%p3 bra 	$Lt_0_2562;
+	bra.uni 	$Lt_0_2050;
+$Lt_0_3074:
+	mov.s32 	%r18, 0;
+$Lt_0_2050:
+	.loc	14	98	0
+	ld.param.u64 	%rd15, [__cudaparm_compare_faultyElems];
+	atom.global.add.s32 	%r20, [%rd15], %r18;
+	.loc	15	18	0
+	exit;
+$LDWend_compare:
+	} // compare
+
+	.entry compareD (
+		.param .u64 __cudaparm_compareD_C,
+		.param .u64 __cudaparm_compareD_faultyElems,
+		.param .u64 __cudaparm_compareD_iters)
+	{
+	.reg .u32 %r<22>;
+	.reg .u64 %rd<17>;
+	.reg .f64 %fd<7>;
+	.reg .pred %p<5>;
+	.loc	15	20	0
+$LDWbegin_compareD:
+	ld.param.u64 	%rd1, [__cudaparm_compareD_iters];
+	mov.u64 	%rd2, 1;
+	setp.le.u64 	%p1, %rd1, %rd2;
+	@%p1 bra 	$Lt_1_3074;
+	ld.param.u64 	%rd1, [__cudaparm_compareD_iters];
+	sub.u64 	%rd3, %rd1, 1;
+	cvt.u32.u16 	%r1, %ntid.y;
+	cvt.u32.u16 	%r2, %ctaid.y;
+	mul.lo.u32 	%r3, %r2, %r1;
+	cvt.u32.u16 	%r4, %ntid.x;
+	mul.lo.u32 	%r5, %r4, %r1;
+	cvt.u32.u16 	%r6, %tid.y;
+	add.u32 	%r7, %r6, %r3;
+	cvt.u32.u16 	%r8, %nctaid.x;
+	mul.lo.u32 	%r9, %r5, %r8;
+	mul.lo.u32 	%r10, %r7, %r8;
+	cvt.u32.u16 	%r11, %ctaid.x;
+	add.u32 	%r12, %r11, %r10;
+	cvt.u32.u16 	%r13, %nctaid.y;
+	mul.lo.u32 	%r14, %r13, %r9;
+	cvt.u64.u32 	%rd4, %r14;
+	mul.lo.u32 	%r15, %r12, %r4;
+	cvt.u32.u16 	%r16, %tid.x;
+	add.u32 	%r17, %r16, %r15;
+	cvt.u64.u32 	%rd5, %r17;
+	ld.param.u64 	%rd6, [__cudaparm_compareD_C];
+	mul.wide.u32 	%rd7, %r14, 8;
+	mul.wide.u32 	%rd8, %r17, 8;
+	add.u64 	%rd9, %rd6, %rd8;
+	ld.global.f64 	%fd1, [%rd9+0];
+	add.u64 	%rd10, %rd5, %rd4;
+	mul.lo.u64 	%rd11, %rd10, 8;
+	add.u64 	%rd12, %rd6, %rd11;
+	mov.u64 	%rd13, 1;
+	mov.s32 	%r18, 0;
+	mov.s64 	%rd14, %rd3;
+$Lt_1_2562:
+ //<loop> Loop body line 20, nesting depth: 1, estimated iterations: unknown
+	.loc	15	28	0
+	add.s32 	%r19, %r18, 1;
+	ld.global.f64 	%fd2, [%rd12+0];
+	sub.f64 	%fd3, %fd1, %fd2;
+	abs.f64 	%fd4, %fd3;
+	mov.f64 	%fd5, 0d3e7ad7f29abcaf48;	// 1e-07
+	setp.gt.f64 	%p2, %fd4, %fd5;
+	selp.s32 	%r18, %r19, %r18, %p2;
+	add.u64 	%rd13, %rd13, 1;
+	add.u64 	%rd12, %rd7, %rd12;
+	.loc	15	20	0
+	ld.param.u64 	%rd1, [__cudaparm_compareD_iters];
+	.loc	15	28	0
+	setp.ne.u64 	%p3, %rd1, %rd13;
+	@%p3 bra 	$Lt_1_2562;
+	bra.uni 	$Lt_1_2050;
+$Lt_1_3074:
+	mov.s32 	%r18, 0;
+$Lt_1_2050:
+	.loc	14	98	0
+	ld.param.u64 	%rd15, [__cudaparm_compareD_faultyElems];
+	atom.global.add.s32 	%r20, [%rd15], %r18;
+	.loc	15	32	0
+	exit;
+$LDWend_compareD:
+	} // compareD
+
