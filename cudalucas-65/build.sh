@@ -8,6 +8,10 @@ case $( hostname ) in
         MODS="PrgEnv-gnu cudatoolkit"
         MAKE_INC="make.daint"
         ;;
+    *greina*)
+        MODS="cuda70/toolkit/7.0.28"
+        MAKE_INC="make.greina"
+        ;;
     *)
         echo "Don't know how to compile here. Exiting."
         exit 1
